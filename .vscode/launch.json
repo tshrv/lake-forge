@@ -13,8 +13,6 @@
             "justMyCode": true,
             "cwd": "${workspaceFolder}/data_generator",
             "args": [
-                "--data-dir-name",
-                "${input:dataDirName}",
                 "--scale-factor",
                 "${input:scaleFactor}"
             ]
@@ -31,17 +29,6 @@
                 "100"
             ],
             "default": "1"
-        },
-        {
-            "id": "dataDirName",
-            "type": "pickString",
-            "description": "Enter data directory name",
-            "options": [
-                "data_sf_1",
-                "data_sf_10",
-                "data_sf_100"
-            ],
-            "default": "data_sf_1"
         }
     ]
 }
