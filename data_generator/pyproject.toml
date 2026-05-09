@@ -5,12 +5,14 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "duckdb>=1.5.2",
     "loguru>=0.7.3",
     "tpchgen-cli>=2.0.2",
 ]
 
 [dependency-groups]
 dev = [
+    "pyrefly>=0.64.1",
     "ruff>=0.15.12",
 ]
 
@@ -24,3 +26,9 @@ select = ["E", "F", "I"]
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.pyrefly]
+project-includes = [
+    "**/*.py*",
+    "**/*.ipynb",
+]

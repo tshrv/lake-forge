@@ -1,19 +1,21 @@
 import argparse
-import os
-import shutil
-import subprocess
 
 from loguru import logger
 
-from utils import timeit
+from db import load_into_db, validate_data
+from generator import generate_parquet_data
 
 
-@timeit("Data generation")
 def main():
     logger.info("Data generation started")
     args = parse_arguments()
-    generate_parquet_data(scale_factor=args.scale_factor)
+    data_dir_path = generate_parquet_data(scale_factor=args.scale_factor)
+    table_map = load_into_db(data_dir_path=data_dir_path)
     logger.info("Data generation completed")
+
+    logger.info("Data validation started")
+    validate_data(table_map=table_map)
+    logger.info("Data validation completed")
 
 
 def parse_arguments():
@@ -27,44 +29,6 @@ def parse_arguments():
         help="Scale factor for data generation (e.g., 1, 10, 100). Default is 1.",
     )
     return parser.parse_args()
-
-
-def generate_parquet_data(scale_factor: int = 1):
-    """
-    Generate data using tpchgen-cli into specified output directory
-    with given scale factor. The data will be generated in Parquet format.
-    """
-    data_dir_name = f"data_sf_{scale_factor}"
-    output_dir = f"./data/{data_dir_name}"
-
-    # delete directory if it already exists
-    if os.path.exists(output_dir):
-        shutil.rmtree(output_dir)
-
-    # run generator
-    result = subprocess.run(
-        [
-            "uv",
-            "run",
-            "tpchgen-cli",
-            "--scale-factor",
-            str(scale_factor),
-            "--output-dir",
-            output_dir,
-            "--format",
-            "parquet",
-        ],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-
-    # log results
-    logger.info(f"STDOUT: {result.stdout or None}")
-    logger.info(f"Output directory: {output_dir}")
-    if result.returncode != 0:
-        logger.error(f"Data generation failed with return code {result.returncode}")
-        logger.error(f"Error: {result.stderr}")
 
 
 if __name__ == "__main__":
