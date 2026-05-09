@@ -53,10 +53,33 @@ def get_entity_path_map(data_dir_path: str) -> dict[str, str]:
     return all_files
 
 
-def create_table_from_parquet(con, table_name: str, file_path: str):
+def create_table_from_parquet(
+    con: duckdb.DuckDBPyConnection, table_name: str, file_path: str
+):
     """
     Create a table in duckdb from a Parquet file.
     """
     logger.info(f"Creating table '{table_name}' from file: {file_path}")
     con.execute(f"DROP TABLE IF EXISTS {table_name}")
     con.execute(f"CREATE TABLE {table_name} AS SELECT * FROM '{file_path}'")
+
+
+@timeit("Data validation")
+def validate_data(table_map: dict[str, str]):
+    """
+    Validate that the data has been loaded correctly by running some sample queries.
+    """
+    with get_db_connection() as con:
+        for table_name in table_map.keys():
+            count_rows(con, table_name)
+
+
+def count_rows(con: duckdb.DuckDBPyConnection, table_name: str):
+    """
+    Count the number of rows in a given table.
+    """
+    result = con.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()
+    if result is None:
+        logger.error(f"Table '{table_name}' is empty or does not exist.")
+    else:
+        logger.info(f"Table: '{table_name}', rows: {result[0]}")
