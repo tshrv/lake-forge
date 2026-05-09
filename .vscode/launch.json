@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Data Generator",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/data_generator",
+            "args": [
+                "--scale-factor",
+                "${input:scaleFactor}"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "scaleFactor",
+            "type": "pickString",
+            "description": "Enter scale factor",
+            "options": [
+                "1",
+                "10",
+                "100"
+            ],
+            "default": "1"
+        }
+    ]
+}
