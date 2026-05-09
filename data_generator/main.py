@@ -10,7 +10,7 @@ def main():
     logger.info("Data generation started")
     args = parse_arguments()
     data_dir_path = generate_parquet_data(scale_factor=args.scale_factor)
-    load_into_db(data_dir_path=data_dir_path)
+    table_map = load_into_db(data_dir_path=data_dir_path)
     logger.info("Data generation completed")
 
 

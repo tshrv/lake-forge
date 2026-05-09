@@ -24,7 +24,7 @@ def get_db_connection(db_name: str = "lake-forge.duckdb"):
 
 
 @timeit("Loading data into database")
-def load_into_db(data_dir_path: str):
+def load_into_db(data_dir_path: str) -> dict[str, str]:
     """
     Load all the generated Parquet files into duckdb.
     """
@@ -36,11 +36,13 @@ def load_into_db(data_dir_path: str):
             create_table_from_parquet(con, table_name, file_path)
 
     logger.info("Finished loading data")
+    return all_files
 
 
 def get_entity_path_map(data_dir_path: str) -> dict[str, str]:
     """
     Get a mapping of entity names to their corresponding Parquet file paths.
+    Like, {"nation": "/path/to/nation.parquet", ...}
     """
     all_files = {}
     for root, _, filenames in os.walk(data_dir_path):
