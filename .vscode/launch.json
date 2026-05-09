@@ -6,14 +6,32 @@
     "configurations": [
         {
             "name": "Data Generator",
-            // "type": "python",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            // "python": "${workspaceFolder}/data_generator/.venv/bin/python",
             "cwd": "${workspaceFolder}/data_generator",
+            "args": [
+                "--data-dir-name",
+                "${input:dataDirName}",
+                "--scale-factor",
+                "${input:scaleFactor}"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "scaleFactor",
+            "type": "promptString",
+            "description": "Enter scale factor",
+            "default": "1"
+        },
+        {
+            "id": "dataDirName",
+            "type": "promptString",
+            "description": "Enter data directory name",
+            "default": "data"
         }
     ]
 }

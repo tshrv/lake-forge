@@ -1,3 +1,4 @@
+import argparse
 import os
 import shutil
 import subprocess
@@ -5,12 +6,36 @@ import time
 from typing import Optional
 
 from loguru import logger
+from utils import timeit
 
 
+@timeit("Data generation")
 def main():
     logger.info("Data generation started")
-    generate_parquet_data(data_dir_name="data_sf_1", scale_factor=1)
+    args = parse_arguments()
+    generate_parquet_data(
+        data_dir_name=args.data_dir_name, scale_factor=args.scale_factor
+    )
     logger.info("Data generation completed")
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description="Generate TPCH data in Parquet format."
+    )
+    parser.add_argument(
+        "--data-dir-name",
+        type=str,
+        default=None,
+        help="Name of the output data directory. If not provided, a unique name will be generated.",
+    )
+    parser.add_argument(
+        "--scale-factor",
+        type=int,
+        default=1,
+        help="Scale factor for data generation (e.g., 1, 10, 100). Default is 1.",
+    )
+    return parser.parse_args()
 
 
 def generate_parquet_data(data_dir_name: Optional[str] = None, scale_factor: int = 1):
@@ -20,7 +45,7 @@ def generate_parquet_data(data_dir_name: Optional[str] = None, scale_factor: int
     if not data_dir_name:
         data_dir_name = f"data_sf_{scale_factor}_{int(time.time())}"
     output_dir = f"./data/{data_dir_name}"
-    
+
     # delete directory if it already exists
     if os.path.exists(output_dir):
         shutil.rmtree(output_dir)
