@@ -23,15 +23,25 @@
     "inputs": [
         {
             "id": "scaleFactor",
-            "type": "promptString",
+            "type": "pickString",
             "description": "Enter scale factor",
+            "options": [
+                "1",
+                "10",
+                "100"
+            ],
             "default": "1"
         },
         {
             "id": "dataDirName",
-            "type": "promptString",
+            "type": "pickString",
             "description": "Enter data directory name",
-            "default": "data"
+            "options": [
+                "data_sf_1",
+                "data_sf_10",
+                "data_sf_100"
+            ],
+            "default": "data_sf_1"
         }
     ]
 }
