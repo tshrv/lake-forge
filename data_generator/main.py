@@ -6,6 +6,7 @@ import time
 from typing import Optional
 
 from loguru import logger
+
 from utils import timeit
 
 
@@ -27,7 +28,10 @@ def parse_arguments():
         "--data-dir-name",
         type=str,
         default=None,
-        help="Name of the output data directory. If not provided, a unique name will be generated.",
+        help=(
+            "Name of the output data directory. If not provided, "
+            "a unique name will be generated."
+        ),
     )
     parser.add_argument(
         "--scale-factor",
@@ -40,7 +44,8 @@ def parse_arguments():
 
 def generate_parquet_data(data_dir_name: Optional[str] = None, scale_factor: int = 1):
     """
-    Generate data using tpchgen-cli into specified output directory with given scale factor. The data will be generated in Parquet format.
+    Generate data using tpchgen-cli into specified output directory
+    with given scale factor. The data will be generated in Parquet format.
     """
     if not data_dir_name:
         data_dir_name = f"data_sf_{scale_factor}_{int(time.time())}"
