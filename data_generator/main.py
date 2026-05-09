@@ -1,3 +1,5 @@
+import os
+import shutil
 import subprocess
 import time
 from typing import Optional
@@ -18,6 +20,12 @@ def generate_parquet_data(data_dir_name: Optional[str] = None, scale_factor: int
     if not data_dir_name:
         data_dir_name = f"data_sf_{scale_factor}_{int(time.time())}"
     output_dir = f"./data/{data_dir_name}"
+    
+    # delete directory if it already exists
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+
+    # run generator
     result = subprocess.run(
         [
             "uv",
@@ -34,7 +42,10 @@ def generate_parquet_data(data_dir_name: Optional[str] = None, scale_factor: int
         capture_output=True,
         text=True,
     )
+
+    # log results
     logger.info(f"STDOUT: {result.stdout or None}")
+    logger.info(f"Output directory: {output_dir}")
     if result.returncode != 0:
         logger.error(f"Data generation failed with return code {result.returncode}")
         logger.error(f"Error: {result.stderr}")
