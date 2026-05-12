@@ -8,5 +8,6 @@
   },
 
   "ruff.nativeServer": "on",
-  "python.analysis.autoImportCompletions": true
+  "python.analysis.autoImportCompletions": true,
+  "editor.fontFamily": ""
 }
