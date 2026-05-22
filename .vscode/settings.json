@@ -9,5 +9,5 @@
 
   "ruff.nativeServer": "on",
   "python.analysis.autoImportCompletions": true,
-  "editor.fontFamily": ""
+  "editor.fontFamily": "'Ubuntu Mono', Consolas"
 }
