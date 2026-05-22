@@ -2,7 +2,7 @@ import argparse
 
 from loguru import logger
 
-from db import load_into_db, validate_data
+from db import load_into_db, profile_data, validate_data
 from generator import generate_parquet_data
 
 
@@ -15,6 +15,8 @@ def main():
 
     logger.info("Data validation started")
     validate_data(table_map=table_map)
+    # Run profiling
+    profile_data(table_map=table_map)
     logger.info("Data validation completed")
 
 
