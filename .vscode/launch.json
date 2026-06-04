@@ -14,8 +14,11 @@
             "cwd": "${workspaceFolder}/data_generator",
             "args": [
                 "--scale-factor",
-                "${input:scaleFactor}"
-            ]
+                "${input:scaleFactor}",
+                "--create-db",
+                "${input:createDb}"
+            ],
+            "python": "${workspaceFolder}/data_generator/.venv/bin/python"
         }
     ],
     "inputs": [
@@ -29,6 +32,22 @@
                 "100"
             ],
             "default": "1"
+        },
+        {
+            "id": "createDb",
+            "type": "pickString",
+            "description": "Create a database",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "True"
+                },
+                {
+                    "label": "No",
+                    "value": "False"
+                }
+            ],
+            "default": "False"
         }
     ]
 }

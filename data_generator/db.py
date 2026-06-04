@@ -64,6 +64,9 @@ def get_db_connection(db_name: str = "lake-forge.duckdb"):
     """
     logger.info(f"Connecting to database: {db_name}")
     con = duckdb.connect(database=db_name, read_only=False)
+    con.execute("SET memory_limit='6GB'")
+    con.execute("SET threads=6")
+    con.execute("SET temp_directory='/mnt/c/temp/duckdb_temp'")
     try:
         logger.info(f"Connected to database: {db_name}")
         yield con
@@ -74,14 +77,16 @@ def get_db_connection(db_name: str = "lake-forge.duckdb"):
 
 
 @timeit("Loading data into database")
-def load_into_db(data_dir_path: str) -> dict[str, str]:
+def load_into_db(data_dir_path: str, db_name: str) -> dict[str, str]:
     """
     Load all the generated Parquet files into duckdb.
     """
-    logger.info(f"Loading data into database from directory: {data_dir_path}")
+    logger.info(
+        f"Loading data into database: {db_name} from directory: {data_dir_path}"
+    )
     all_files = get_entity_path_map(data_dir_path)
 
-    with get_db_connection() as con:
+    with get_db_connection(db_name=db_name) as con:
         for table_name, file_path in all_files.items():
             create_table_from_parquet(con, table_name, file_path)
 
@@ -115,11 +120,11 @@ def create_table_from_parquet(
 
 
 @timeit("Data validation")
-def validate_data(table_map: dict[str, str]):
+def validate_data(table_map: dict[str, str], db_name: str):
     """
     Validate that the data has been loaded correctly by running some sample queries.
     """
-    with get_db_connection() as con:
+    with get_db_connection(db_name=db_name) as con:
         for table_name in table_map.keys():
             profile_rows(con, table_name)
 
@@ -285,11 +290,11 @@ def benchmark_join(con: duckdb.DuckDBPyConnection):
 
 
 @timeit("Dataset profiling")
-def profile_data(table_map: dict[str, str]):
+def profile_data(table_map: dict[str, str], db_name: str):
     """
     Run full profiling suite on loaded tables.
     """
-    with get_db_connection() as con:
+    with get_db_connection(db_name=db_name) as con:
         for table_name in table_map.keys():
             logger.info(f"Profiling table: {table_name}")
             profile_rows(con, table_name)
