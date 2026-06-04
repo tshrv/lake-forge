@@ -23,3 +23,17 @@ services:
 
     environment:
       nessie.version.store.type: IN_MEMORY
+  
+  trino:
+    image: trinodb/trino:481
+    container_name: trino
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ./trino/catalog:/etc/trino/catalog
+
+    depends_on:
+      - nessie
+      - minio
