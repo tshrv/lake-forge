@@ -10,6 +10,14 @@ def check():
     )
 
 
+def delete_table(table_name: str):
+    logger.info(f"Deleting iceberg table if it exists: {table_name}")
+    spark.sql(f"""
+        DROP TABLE IF EXISTS nessie.tpch.{table_name}
+    """)
+    logger.info(f"Finished deleting iceberg table: {table_name}")
+
+
 def load_table(table_name: str, dir_path: str, i: int):
     logger.info(f"#{i} Loading {table_name} data from parquet file")
     path = f"{dir_path}/{table_name}.parquet"
@@ -43,7 +51,7 @@ def setup_namespace():
 
 
 def main():
-    dir_path = "/home/tushar/lake-forge/data_generator/data/data_sf_10"
+    dir_path = "/home/tushar/lake-forge/data_generator/data/data_sf_100"
     table_names = [
         "customer",
         "lineitem",
@@ -56,8 +64,12 @@ def main():
     ]
     setup_namespace()
     for i, table_name in enumerate(table_names):
+        delete_table(table_name)
+    for i, table_name in enumerate(table_names):
         load_table(table_name, dir_path, i)
-    logger.info("Finished loading all tables into iceberg tables")
+    logger.info(
+        f"Finished loading all tables into iceberg tables: {', '.join(table_names)}"
+    )
 
 
 if __name__ == "__main__":
