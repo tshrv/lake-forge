@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Data Generator",
+            "name": "Data generator",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
@@ -19,6 +19,22 @@
                 "${input:createDb}"
             ],
             "python": "${workspaceFolder}/data_generator/.venv/bin/python"
+        },
+        {
+            "name": "Load data into iceberg",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/lakehouse/src/load_data.py",
+            "python": "${workspaceFolder}/lakehouse/.venv/bin/python",
+            "cwd": "${workspaceFolder}/lakehouse"
+        },
+        {
+            "name": "Verify data in iceberg",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/lakehouse/src/verify_data.py",
+            "python": "${workspaceFolder}/lakehouse/.venv/bin/python",
+            "cwd": "${workspaceFolder}/lakehouse"
         }
     ],
     "inputs": [
