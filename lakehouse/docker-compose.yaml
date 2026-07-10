@@ -33,6 +33,7 @@ services:
 
     volumes:
       - ./trino/catalog:/etc/trino/catalog
+      - ./trino/config.properties:/etc/trino/config.properties
 
     depends_on:
       - nessie
