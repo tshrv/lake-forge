@@ -28,11 +28,14 @@ ADD COLUMN source_system STRING;
 DESCRIBE TABLE nessie.tpch.customer;
 
 # Partition Evolution
-PARTITIONED BY (days(order_date))
-ALTER TABLE ...
-# Old files stay valid
-# New files use new partition scheme
+ALTER TABLE orders ADD PARTITION FIELD bucket(64, customer_id);
+# Old files stay valid, new files use new partition scheme and when query runs, It transparently combines the results.
 # This is something traditional Hive-style tables struggle with.
+
+# If you want old data reorganized, you explicitly rewrite it.
+# In Spark:
+CALL catalog.system.rewrite_data_files(table => 'db.events');
+# This separation is one of Iceberg's biggest advantages over older Hive-style lake layouts.
 
 # deletion
 DELETE FROM nessie.tpch.customer
@@ -58,8 +61,6 @@ CREATE TABLE nessie.tpch.branch_test (
     id INT
 )
 USING iceberg;
-
-
 ```
 
 
@@ -93,4 +94,96 @@ VALUES
 (2, 'bob');
 
 SELECT * FROM iceberg.tpch."customer$snapshots";
+
+select * from iceberg_main.tpch.customer for version as of <snapshot_id> limit 5;
 ```
+
+# Iceberg
+When creating the table, or afterwards, based on the access patterns, set partition spec for tables which are large.
+- maybe upto 10G tables no partitioning is needed
+- try hashing+bucketing on id
+- day/month/nation etc
+- modify partition spec (does not reorganize old data, does for new)
+- reorganize table data based on new partition spec 
+
+
+## Queries
+
+Query 1
+```sql
+select
+	l_returnflag,
+	l_linestatus,
+	sum(l_quantity) as sum_qty,
+	sum(l_extendedprice) as sum_base_price,
+	sum(l_extendedprice * (1 - l_discount)) as sum_disc_price,
+	sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) as sum_charge,
+	avg(l_quantity) as avg_qty,
+	avg(l_extendedprice) as avg_price,
+	avg(l_discount) as avg_disc,
+	count(*) as count_order
+from
+	iceberg_main.tpch.lineitem
+where
+    l_shipdate <= date_add(
+    'day',
+    -90,
+    DATE '1998-12-01'
+)
+group by
+	l_returnflag,
+	l_linestatus
+order by
+	l_returnflag,
+	l_linestatus;
+```
+
+Query 2 - shipping priority
+```sql
+SELECT
+    l_orderkey,
+    sum(l_extendedprice * (1 - l_discount)) AS revenue,
+    o_orderdate,
+    o_shippriority
+FROM
+    iceberg_main.tpch.customer,
+    iceberg_main.tpch.orders,
+    iceberg_main.tpch.lineitem
+WHERE
+    c_mktsegment = 'BUILDING'
+    AND c_custkey = o_custkey
+    AND l_orderkey = o_orderkey
+    AND o_orderdate < DATE '1995-03-15'
+    AND l_shipdate > DATE '1995-03-15'
+GROUP BY
+    l_orderkey,
+    o_orderdate,
+    o_shippriority
+ORDER BY
+    revenue DESC,
+    o_orderdate
+LIMIT 10;
+```
+
+## Repartitioning
+Check the file sizes, should be aroun 128-150 MB
+If smaller, we have small file problem, file read overhead
+```sql
+-- check a table's file sizes
+SELECT
+    count(*) AS files,
+    sum(record_count) AS rows,
+    avg(file_size_in_bytes)/1024/1024 AS avg_mb
+FROM iceberg_main.tpch."lineitem$files";
+
+-- run repartitioning
+CALL iceberg_main.system.rewrite_data_files(
+    'tpch',
+    'lineitem'
+);
+```
+Also see, `compaction`
+
+## Partition Pruning
+Partition pruning means:
+Trino asks Iceberg for data, Iceberg checks table metadata and says: "Only these partitions/files can contain matching rows; ignore the rest."
