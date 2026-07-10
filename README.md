@@ -1,7 +1,7 @@
 # LakeForge
 An end-to-end open data platform supporting batch ETL, streaming CDC, Iceberg lakehouse storage, and analytics engineering workflows.
 
-# Iceberg + Nessie + MinIO + Spark + Trino Lab
+> Iceberg + Nessie + MinIO + Spark + Trino Lab
 
 ## Architecture
 
