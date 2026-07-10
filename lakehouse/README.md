@@ -183,6 +183,14 @@ CALL iceberg_main.system.rewrite_data_files(
 );
 ```
 Also see, `compaction`
+```sql
+-- spark
+ALTER TABLE iceberg_main.tpch.lineitem
+ADD PARTITION FIELD months(l_shipdate);
+
+
+```
+
 
 ## Partition Pruning
 Partition pruning means:
