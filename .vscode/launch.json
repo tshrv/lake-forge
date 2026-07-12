@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Data Generator",
+            "name": "Data generator",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
@@ -14,8 +14,27 @@
             "cwd": "${workspaceFolder}/data_generator",
             "args": [
                 "--scale-factor",
-                "${input:scaleFactor}"
-            ]
+                "${input:scaleFactor}",
+                "--create-db",
+                "${input:createDb}"
+            ],
+            "python": "${workspaceFolder}/data_generator/.venv/bin/python"
+        },
+        {
+            "name": "Load data into iceberg",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/lakehouse/src/load_data.py",
+            "python": "${workspaceFolder}/lakehouse/.venv/bin/python",
+            "cwd": "${workspaceFolder}/lakehouse"
+        },
+        {
+            "name": "Verify data in iceberg",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/lakehouse/src/verify_data.py",
+            "python": "${workspaceFolder}/lakehouse/.venv/bin/python",
+            "cwd": "${workspaceFolder}/lakehouse"
         }
     ],
     "inputs": [
@@ -29,6 +48,22 @@
                 "100"
             ],
             "default": "1"
+        },
+        {
+            "id": "createDb",
+            "type": "pickString",
+            "description": "Create a database",
+            "options": [
+                {
+                    "label": "Yes",
+                    "value": "True"
+                },
+                {
+                    "label": "No",
+                    "value": "False"
+                }
+            ],
+            "default": "False"
         }
     ]
 }

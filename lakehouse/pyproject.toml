@@ -1,0 +1,12 @@
+[project]
+name = "lakehouse-v2"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ipython>=9.14.0",
+    "jupyter>=1.1.1",
+    "loguru>=0.7.3",
+    "pyspark==3.5.6",
+]

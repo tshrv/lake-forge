@@ -1,0 +1,40 @@
+services:
+
+  minio:
+    image: minio/minio
+    container_name: minio
+
+    command: server /data --console-address ":9001"
+
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+
+  nessie:
+    image: ghcr.io/projectnessie/nessie:0.106.0
+    container_name: nessie
+
+    ports:
+      - "19120:19120"
+
+    environment:
+      nessie.version.store.type: IN_MEMORY
+  
+  trino:
+    image: trinodb/trino:481
+    container_name: trino
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ./trino/catalog:/etc/trino/catalog
+      - ./trino/config.properties:/etc/trino/config.properties
+
+    depends_on:
+      - nessie
+      - minio
