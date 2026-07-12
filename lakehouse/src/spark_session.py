@@ -4,8 +4,9 @@ from pyspark.sql import SparkSession
 def create_spark():
     return (
         SparkSession.builder.appName("lakehouse-v2")
-        .master("local[*]")
-        .config("spark.driver.memory", "4g")
+        # .master("local[*]")
+        .master("local[4]")
+        .config("spark.driver.memory", "6g")
         .config("spark.sql.shuffle.partitions", "16")
         .config(
             "spark.jars.packages",
