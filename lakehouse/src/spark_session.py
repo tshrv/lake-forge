@@ -30,21 +30,21 @@ def create_spark():
             ),
         )
         .config(
-            "spark.sql.catalog.nessie.io-impl",
+            "spark.sql.catalog.lakeforge.io-impl",
             "org.apache.iceberg.aws.s3.S3FileIO",
         )
-        .config("spark.sql.catalog.nessie", "org.apache.iceberg.spark.SparkCatalog")
+        .config("spark.sql.catalog.lakeforge", "org.apache.iceberg.spark.SparkCatalog")
         .config(
-            "spark.sql.catalog.nessie.catalog-impl",
+            "spark.sql.catalog.lakeforge.catalog-impl",
             "org.apache.iceberg.nessie.NessieCatalog",
         )
-        .config("spark.sql.catalog.nessie.uri", "http://localhost:19120/api/v1")
-        .config("spark.sql.catalog.nessie.ref", "main")
-        .config("spark.sql.catalog.nessie.warehouse", "s3://warehouse/")
-        .config("spark.sql.catalog.nessie.s3.endpoint", "http://localhost:9000")
-        .config("spark.sql.catalog.nessie.s3.path-style-access", "true")
-        .config("spark.sql.catalog.nessie.s3.access-key-id", "admin")
-        .config("spark.sql.catalog.nessie.s3.secret-access-key", "password123")
+        .config("spark.sql.catalog.lakeforge.uri", "http://localhost:19120/api/v1")
+        .config("spark.sql.catalog.lakeforge.ref", "main")
+        .config("spark.sql.catalog.lakeforge.warehouse", "s3://warehouse/")
+        .config("spark.sql.catalog.lakeforge.s3.endpoint", "http://localhost:9000")
+        .config("spark.sql.catalog.lakeforge.s3.path-style-access", "true")
+        .config("spark.sql.catalog.lakeforge.s3.access-key-id", "admin")
+        .config("spark.sql.catalog.lakeforge.s3.secret-access-key", "password123")
         .config(
             "spark.hadoop.fs.s3a.endpoint",
             "http://localhost:9000",
@@ -66,7 +66,7 @@ def create_spark():
             "org.apache.hadoop.fs.s3a.S3AFileSystem",
         )
         .config(
-            "spark.sql.catalog.nessie.s3.region",
+            "spark.sql.catalog.lakeforge.s3.region",
             "us-east-1",
         )
         .config(

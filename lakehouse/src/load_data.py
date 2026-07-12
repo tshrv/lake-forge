@@ -13,7 +13,7 @@ def check():
 def delete_table(table_name: str):
     logger.info(f"Deleting iceberg table if it exists: {table_name}")
     spark.sql(f"""
-        DROP TABLE IF EXISTS nessie.tpch.{table_name}
+        DROP TABLE IF EXISTS lakeforge.tpch.{table_name}
     """)
     logger.info(f"Finished deleting iceberg table: {table_name}")
 
@@ -29,25 +29,25 @@ def load_table(table_name: str, dir_path: str, i: int):
     df.printSchema()
 
     # create iceberg table
-    df.writeTo(f"nessie.tpch.{table_name}").using("iceberg").create()
+    df.writeTo(f"lakeforge.tpch.{table_name}").using("iceberg").create()
 
     # verify customer data is in iceberg table
     spark.sql(f"""
         SELECT COUNT(*)
-        FROM nessie.tpch.{table_name}
+        FROM lakeforge.tpch.{table_name}
     """).show()
     logger.info(f"Finished loading {table_name} data into iceberg table")
 
 
 def setup_namespace():
-    logger.info("Setting up Nessie namespace")
+    logger.info("Setting up lakeforge namespace")
     spark.sql("""
-        CREATE NAMESPACE IF NOT EXISTS nessie.tpch
+        CREATE NAMESPACE IF NOT EXISTS lakeforge.tpch
     """)
     spark.sql("""
-        SHOW NAMESPACES IN nessie
+        SHOW NAMESPACES IN lakeforge
     """).show(truncate=False)
-    logger.info("Finished setting up Nessie namespace")
+    logger.info("Finished setting up lakeforge namespace")
 
 
 def main():
