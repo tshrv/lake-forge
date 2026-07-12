@@ -76,26 +76,26 @@ iceberg.nessie-catalog.ref=experiment
 
 ```sql
 SHOW CATALOGS;
-SHOW SCHEMAS FROM iceberg;
-SHOW TABLES FROM iceberg.tpch;
+SHOW SCHEMAS FROM lakeforge_main;
+SHOW TABLES FROM lakeforge_main.tpch;
 
 SELECT COUNT(*)
-FROM iceberg.tpch.lineitem;
+FROM lakeforge_main.tpch.lineitem;
 
 
-CREATE TABLE iceberg.tpch.trino_test (
+CREATE TABLE lakeforge_main.tpch.trino_test (
     id BIGINT,
     name VARCHAR
 );
 
-INSERT INTO iceberg.tpch.trino_test
+INSERT INTO lakeforge_main.tpch.trino_test
 VALUES
 (1, 'alice'),
 (2, 'bob');
 
-SELECT * FROM iceberg.tpch."customer$snapshots";
+SELECT * FROM lakeforge_main.tpch."customer$snapshots";
 
-select * from iceberg_main.tpch.customer for version as of <snapshot_id> limit 5;
+select * from lakeforge_main.tpch.customer for version as of <snapshot_id> limit 5;
 ```
 
 # Iceberg
@@ -123,7 +123,7 @@ select
 	avg(l_discount) as avg_disc,
 	count(*) as count_order
 from
-	iceberg_main.tpch.lineitem
+	lakeforge_main.tpch.lineitem
 where
     l_shipdate <= date_add(
     'day',
@@ -146,9 +146,9 @@ SELECT
     o_orderdate,
     o_shippriority
 FROM
-    iceberg_main.tpch.customer,
-    iceberg_main.tpch.orders,
-    iceberg_main.tpch.lineitem
+    lakeforge_main.tpch.customer,
+    lakeforge_main.tpch.orders,
+    lakeforge_main.tpch.lineitem
 WHERE
     c_mktsegment = 'BUILDING'
     AND c_custkey = o_custkey
@@ -174,10 +174,10 @@ SELECT
     count(*) AS files,
     sum(record_count) AS rows,
     avg(file_size_in_bytes)/1024/1024 AS avg_mb
-FROM iceberg_main.tpch."lineitem$files";
+FROM lakeforge_main.tpch."lineitem$files";
 
 -- run repartitioning
-CALL iceberg_main.system.rewrite_data_files(
+CALL lakeforge_main.system.rewrite_data_files(
     'tpch',
     'lineitem'
 );
