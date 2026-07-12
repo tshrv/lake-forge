@@ -47,6 +47,7 @@ services:
     volumes:
       - ./trino/catalog:/etc/trino/catalog
       - ./trino/config.properties:/etc/trino/config.properties
+      - ./trino/jvm.config:/etc/trino/jvm.config
     depends_on:
       - nessie
       - minio
