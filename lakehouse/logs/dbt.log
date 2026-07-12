@@ -1,0 +1,86 @@
+[0m14:32:10.105641 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7095868dc740>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x709583d06300>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x709583d06390>]}
+
+
+============================== 14:32:10.149058 | 73b419d1-223f-4962-8769-cf3e43b05777 ==============================
+[0m14:32:10.149058 [info ] [MainThread]: Running with dbt=1.11.12
+[0m14:32:10.149871 [debug] [MainThread]: running dbt with arguments {'target_path': 'None', 'profiles_dir': '/home/tushar/.dbt', 'write_json': 'True', 'empty': 'None', 'log_path': 'logs', 'debug': 'False', 'send_anonymous_usage_stats': 'True', 'indirect_selection': 'eager', 'invocation_command': 'dbt init tpch_lakehouse', 'fail_fast': 'False', 'warn_error': 'None', 'introspect': 'True', 'use_experimental_parser': 'False', 'use_colors': 'True', 'cache_selected_only': 'False', 'printer_width': '80', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'log_format': 'default', 'no_print': 'None', 'log_cache_events': 'False', 'version_check': 'True', 'partial_parse': 'True', 'static_parser': 'True', 'quiet': 'False'}
+[0m14:32:10.180945 [info ] [MainThread]: Creating dbt configuration folder at /home/tushar/.dbt
+[0m14:32:10.184138 [debug] [MainThread]: Starter project path: /home/tushar/lake-forge/lakehouse/.venv/lib/python3.12/site-packages/dbt/include/starter_project
+[0m14:32:10.191231 [info ] [MainThread]: 
+Your new dbt project "tpch_lakehouse" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m14:32:10.191655 [info ] [MainThread]: Setting up your profile.
+[0m14:32:35.968286 [info ] [MainThread]: Profile tpch_lakehouse written to /home/tushar/.dbt/profiles.yml using target's sample configuration. Once updated, you'll be able to start developing with dbt.
+[0m14:32:35.968969 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 27.367266, "process_in_blocks": "96216", "process_kernel_time": 0.26823, "process_mem_max_rss": "140284", "process_out_blocks": "952", "process_user_time": 1.967022}
+[0m14:32:35.969474 [debug] [MainThread]: Command `dbt init` succeeded at 14:32:35.969330 after 27.37 seconds
+[0m14:32:35.969893 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x709583f138f0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x709583a8efc0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7095839b4b30>]}
+[0m14:32:35.970223 [debug] [MainThread]: Flushing usage events
+[0m14:32:37.095478 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m15:20:11.505954 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7e73ac1340e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7e73a9e970e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7e73aa2ce7e0>]}
+
+
+============================== 15:20:11.512900 | 72946200-180b-4cb7-b69d-5c22b4fd4684 ==============================
+[0m15:20:11.512900 [info ] [MainThread]: Running with dbt=1.11.12
+[0m15:20:11.513483 [debug] [MainThread]: running dbt with arguments {'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'indirect_selection': 'eager', 'warn_error': 'None', 'write_json': 'True', 'static_parser': 'True', 'cache_selected_only': 'False', 'invocation_command': 'dbt debug', 'fail_fast': 'False', 'profiles_dir': '/home/tushar/.dbt', 'log_format': 'default', 'use_experimental_parser': 'False', 'partial_parse': 'True', 'send_anonymous_usage_stats': 'True', 'version_check': 'True', 'printer_width': '80', 'use_colors': 'True', 'no_print': 'None', 'target_path': 'None', 'empty': 'None', 'quiet': 'False', 'introspect': 'True', 'log_cache_events': 'False', 'debug': 'False', 'log_path': 'logs'}
+[0m15:20:11.540397 [info ] [MainThread]: dbt version: 1.11.12
+[0m15:20:11.540859 [info ] [MainThread]: python version: 3.12.13
+[0m15:20:11.541242 [info ] [MainThread]: python path: /home/tushar/lake-forge/lakehouse/.venv/bin/python3
+[0m15:20:11.541608 [info ] [MainThread]: os info: Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39
+[0m15:20:11.644785 [info ] [MainThread]: Using profiles dir at /home/tushar/.dbt
+[0m15:20:11.645338 [info ] [MainThread]: Using profiles.yml file at /home/tushar/.dbt/profiles.yml
+[0m15:20:11.645764 [info ] [MainThread]: Using dbt_project.yml file at /home/tushar/lake-forge/lakehouse/dbt_project.yml
+[0m15:20:11.646210 [info ] [MainThread]: adapter type: trino
+[0m15:20:11.646612 [info ] [MainThread]: adapter version: 1.10.2
+[0m15:20:11.647038 [info ] [MainThread]: Configuration:
+[0m15:20:11.647518 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m15:20:11.648027 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m15:20:11.648441 [info ] [MainThread]: Required dependencies:
+[0m15:20:11.648877 [debug] [MainThread]: Executing "git --help"
+[0m15:20:11.651798 [debug] [MainThread]: STDOUT: "b"usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--config-env=<name>=<envvar>] <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m15:20:11.652464 [debug] [MainThread]: STDERR: "b''"
+[0m15:20:11.652881 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m15:20:11.653401 [info ] [MainThread]: Connection:
+[0m15:20:11.653872 [info ] [MainThread]:   host: localhost
+[0m15:20:11.654273 [info ] [MainThread]:   port: 8080
+[0m15:20:11.654658 [info ] [MainThread]:   user: admin
+[0m15:20:11.655052 [info ] [MainThread]:   database: iceberg_main
+[0m15:20:11.655455 [info ] [MainThread]:   schema: tpch
+[0m15:20:11.655884 [info ] [MainThread]:   cert: None
+[0m15:20:11.656321 [info ] [MainThread]:   prepared_statements_enabled: True
+[0m15:20:11.656858 [info ] [MainThread]: Registered adapter: trino=1.10.2
+[0m15:20:11.754693 [debug] [MainThread]: Acquiring new trino connection 'debug'
+[0m15:20:11.816742 [debug] [MainThread]: Using trino connection "debug"
+[0m15:20:11.817473 [debug] [MainThread]: On debug: select 1 as id
+[0m15:20:11.817969 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m15:20:11.818404 [warn ] [MainThread]: [[33mWARNING[0m]: SSL certificate validation is disabled by default. It is legacy behavior which will be changed in future releases. It is strongly advised to enable `require_certificate_validation` flag or explicitly set `cert` configuration to `True` for security reasons. You may receive an error after that if your SSL setup is incorrect.
+You may opt into the new behavior sooner by setting `flags.require_certificate_validation` to `True` in `dbt_project.yml`.
+Visit https://docs.getdbt.com/reference/global-configs/behavior-changes for more information.
+[0m15:20:11.819095 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'BehaviorChangeEvent', 'label': '72946200-180b-4cb7-b69d-5c22b4fd4684', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7e73a8defb30>]}
+[0m15:20:12.959559 [debug] [MainThread]: SQL status: SUCCESS in 1.142 seconds
+[0m15:20:12.960804 [debug] [MainThread]: On debug: Close
+[0m15:20:12.961350 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m15:20:12.961840 [info ] [MainThread]: [31m1 check failed:[0m
+[0m15:20:12.962329 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </home/tushar/lake-forge/lakehouse/dbt_project.yml> not found
+
+[0m15:20:12.963244 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 1.5780704, "process_in_blocks": "99344", "process_kernel_time": 0.839083, "process_mem_max_rss": "130656", "process_out_blocks": "480", "process_user_time": 4.268883}
+[0m15:20:12.963807 [debug] [MainThread]: Command `dbt debug` failed at 15:20:12.963682 after 1.58 seconds
+[0m15:20:12.964296 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m15:20:12.964897 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7e73ac1e5d60>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7e73a95cf3b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7e73ab0cacf0>]}
+[0m15:20:12.965365 [debug] [MainThread]: Flushing usage events
+[0m15:20:14.427335 [debug] [MainThread]: An error was encountered while trying to flush usage events

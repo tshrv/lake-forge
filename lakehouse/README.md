@@ -200,3 +200,50 @@ CALL nessie.system.rewrite_data_files(
 ## Partition Pruning
 Partition pruning means:
 Trino asks Iceberg for data, Iceberg checks table metadata and says: "Only these partitions/files can contain matching rows; ignore the rest."
+
+
+# DBT
+
+Iceberg already provides
+- ACID
+- snapshots
+- partitions
+- compaction
+- schema evolution
+- branching
+
+dbt provides
+- SQL transformations
+- testing
+- documentation
+- lineage
+- incremental pipelines
+- dependency graph
+
+They solve different problems.
+
+
+```
+dbt Models
+        │
+        ├── Silver
+        ├── Gold
+        ├── Tests
+        ├── Docs
+        ├── Lineage
+        └── Incremental Models
+```
+
+
+> A compelling extension for your resume
+
+To make the project stand out as a modern lakehouse implementation, aim for this workflow:
+
+Spark ingests TPCH SF100 into Iceberg (raw layer).
+Nessie manages catalog versioning, allowing branches for development and experimentation.
+Iceberg handles storage features such as partitioning, compaction, schema evolution, and time travel.
+dbt (via Trino) builds Silver and Gold models, enforces data quality tests, and generates lineage/documentation.
+Trino serves fast analytical queries over both raw and transformed Iceberg tables.
+A BI tool (e.g., Apache Superset, Power BI, or Tableau) connects to Trino to visualize business metrics.
+
+That progression demonstrates an understanding of ingestion, storage, governance, transformation, serving, and analytics—the complete lifecycle expected in a modern data engineering project.
