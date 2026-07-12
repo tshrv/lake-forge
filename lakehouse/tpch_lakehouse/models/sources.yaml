@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: tpch
+    description: Raw TPCH tables loaded by Spark into Iceberg
+
+    database: lakeforge_main
+    schema: tpch
+
+    tables:
+      - name: customer
+      - name: orders
+      - name: lineitem
+      - name: nation
+      - name: region
+      - name: part
+      - name: supplier
+      - name: partsupp

@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: Cleaned orders data from the TPCH raw source.
+
+    columns:
+      - name: order_key
+        description: Primary key for an order.
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_key
+        description: Customer who placed the order.
+        tests:
+          - not_null
+
+      - name: order_date
+        description: Date the order was placed.
+        tests:
+          - not_null
+
+      - name: total_price
+        description: Total order value.
+        tests:
+          - not_null
