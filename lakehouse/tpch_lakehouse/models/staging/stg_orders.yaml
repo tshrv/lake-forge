@@ -2,26 +2,42 @@ version: 2
 
 models:
   - name: stg_orders
-    description: Cleaned orders data from the TPCH raw source.
+    description: Cleaned staging model for TPCH orders.
 
     columns:
       - name: order_key
-        description: Primary key for an order.
+        description: Unique identifier for an order.
         tests:
           - unique
           - not_null
 
       - name: customer_key
-        description: Customer who placed the order.
+        description: Foreign key to the customer placing the order.
         tests:
           - not_null
 
+      - name: order_status
+        description: Current status of the order.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['F', 'O', 'P']
+
       - name: order_date
-        description: Date the order was placed.
+        description: Date on which the order was placed.
         tests:
           - not_null
 
       - name: total_price
-        description: Total order value.
+        description: Total monetary value of the order.
         tests:
           - not_null
+
+      - name: order_priority
+        description: Order priority assigned by TPCH.
+
+      - name: clerk
+        description: Clerk responsible for the order.
+
+      - name: ship_priority
+        description: Shipping priority.
