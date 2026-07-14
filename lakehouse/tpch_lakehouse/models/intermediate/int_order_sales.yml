@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: int_order_sales
+    description: |
+      One row per order line enriched with order-level information
+      and reusable sales metrics
+
+    columns:
+
+      - name: order_key
+        tests:
+          - not_null
+
+      - name: customer_key
+        tests:
+          - not_null
+
+      - name: net_sales
+        tests:
+          - not_null

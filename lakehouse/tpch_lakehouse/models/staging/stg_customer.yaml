@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_customer
+    description: Cleaned TPCH customer data.
+
+    columns:
+      - name: customer_key
+        tests:
+          - unique
+          - not_null
+
+      - name: nation_key
+        tests:
+          - not_null
+
+      - name: customer_name
+        tests:
+          - not_null
+
+      - name: market_segment
+        tests:
+          - not_null

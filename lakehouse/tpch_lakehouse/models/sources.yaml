@@ -3,13 +3,19 @@ version: 2
 sources:
   - name: tpch
     description: Raw TPCH tables loaded by Spark into Iceberg
-
     database: lakeforge_main
     schema: tpch
 
     tables:
       - name: customer
       - name: orders
+        description: Raw TPCH orders data loaded by spark
+        columns:
+          - name: o_orderkey
+            description: The primary key for the orders table
+            tests:
+              - unique
+              - not_null
       - name: lineitem
       - name: nation
       - name: region
