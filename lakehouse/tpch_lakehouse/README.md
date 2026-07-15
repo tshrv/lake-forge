@@ -204,3 +204,28 @@ int_order_sales
        ├── supplier_revenue
        ├── top_products
        └── sales_by_region
+
+```
+                    Raw TPCH
+                        │
+        ┌───────────────┼────────────────┐
+        │               │                │
+   stg_orders    stg_customer     stg_lineitem
+        │               │                │
+        └───────────────┼────────────────┘
+                        │
+                 int_order_sales
+                        │
+        ┌────────┬────────┬─────────┬────────┐
+        │        │        │         │        │
+customer_revenue │ supplier_revenue │  sales_by_region
+                 │                  │
+          monthly_sales      top_products
+                  
+```
+This is the kind of DAG that looks great in dbt docs because it tells a story: raw ingestion → cleaned staging → reusable business logic → multiple analytics marts.
+
+uv run dbt run --select monthly_sales --select sales_by_region --select supplier_revenue --select top_products
+
+
+> Pending: DBT INCREMENTAL
