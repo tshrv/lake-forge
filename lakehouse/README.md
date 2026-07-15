@@ -76,26 +76,26 @@ iceberg.nessie-catalog.ref=experiment
 
 ```sql
 SHOW CATALOGS;
-SHOW SCHEMAS FROM iceberg;
-SHOW TABLES FROM iceberg.tpch;
+SHOW SCHEMAS FROM lakeforge_main;
+SHOW TABLES FROM lakeforge_main.tpch;
 
 SELECT COUNT(*)
-FROM iceberg.tpch.lineitem;
+FROM lakeforge_main.tpch.lineitem;
 
 
-CREATE TABLE iceberg.tpch.trino_test (
+CREATE TABLE lakeforge_main.tpch.trino_test (
     id BIGINT,
     name VARCHAR
 );
 
-INSERT INTO iceberg.tpch.trino_test
+INSERT INTO lakeforge_main.tpch.trino_test
 VALUES
 (1, 'alice'),
 (2, 'bob');
 
-SELECT * FROM iceberg.tpch."customer$snapshots";
+SELECT * FROM lakeforge_main.tpch."customer$snapshots";
 
-select * from iceberg_main.tpch.customer for version as of <snapshot_id> limit 5;
+select * from lakeforge_main.tpch.customer for version as of <snapshot_id> limit 5;
 ```
 
 # Iceberg
@@ -123,7 +123,7 @@ select
 	avg(l_discount) as avg_disc,
 	count(*) as count_order
 from
-	iceberg_main.tpch.lineitem
+	lakeforge_main.tpch.lineitem
 where
     l_shipdate <= date_add(
     'day',
@@ -146,9 +146,9 @@ SELECT
     o_orderdate,
     o_shippriority
 FROM
-    iceberg_main.tpch.customer,
-    iceberg_main.tpch.orders,
-    iceberg_main.tpch.lineitem
+    lakeforge_main.tpch.customer,
+    lakeforge_main.tpch.orders,
+    lakeforge_main.tpch.lineitem
 WHERE
     c_mktsegment = 'BUILDING'
     AND c_custkey = o_custkey
@@ -174,10 +174,10 @@ SELECT
     count(*) AS files,
     sum(record_count) AS rows,
     avg(file_size_in_bytes)/1024/1024 AS avg_mb
-FROM iceberg_main.tpch."lineitem$files";
+FROM lakeforge_main.tpch."lineitem$files";
 
 -- run repartitioning
-CALL iceberg_main.system.rewrite_data_files(
+CALL lakeforge_main.system.rewrite_data_files(
     'tpch',
     'lineitem'
 );
@@ -200,3 +200,50 @@ CALL nessie.system.rewrite_data_files(
 ## Partition Pruning
 Partition pruning means:
 Trino asks Iceberg for data, Iceberg checks table metadata and says: "Only these partitions/files can contain matching rows; ignore the rest."
+
+
+# DBT
+
+Iceberg already provides
+- ACID
+- snapshots
+- partitions
+- compaction
+- schema evolution
+- branching
+
+dbt provides
+- SQL transformations
+- testing
+- documentation
+- lineage
+- incremental pipelines
+- dependency graph
+
+They solve different problems.
+
+
+```
+dbt Models
+        │
+        ├── Silver
+        ├── Gold
+        ├── Tests
+        ├── Docs
+        ├── Lineage
+        └── Incremental Models
+```
+
+
+> A compelling extension for your resume
+
+To make the project stand out as a modern lakehouse implementation, aim for this workflow:
+
+Spark ingests TPCH SF100 into Iceberg (raw layer).
+Nessie manages catalog versioning, allowing branches for development and experimentation.
+Iceberg handles storage features such as partitioning, compaction, schema evolution, and time travel.
+dbt (via Trino) builds Silver and Gold models, enforces data quality tests, and generates lineage/documentation.
+Trino serves fast analytical queries over both raw and transformed Iceberg tables.
+A BI tool (e.g., Apache Superset, Power BI, or Tableau) connects to Trino to visualize business metrics.
+
+That progression demonstrates an understanding of ingestion, storage, governance, transformation, serving, and analytics—the complete lifecycle expected in a modern data engineering project.

@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: monthly_sales
+
+    columns:
+
+      - name: sales_month
+        tests:
+          - unique
+          - not_null
+
+      - name: revenue
+        tests:
+          - not_null
