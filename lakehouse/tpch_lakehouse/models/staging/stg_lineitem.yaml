@@ -16,7 +16,36 @@ models:
       - name: quantity
         tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
 
       - name: extended_price
         tests:
           - not_null
+      
+      - name: discount
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 0.10
+
+      - name: tax
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 0.08
+    
+    tests:
+
+      - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
+          column_A: receipt_date
+          column_B: ship_date
+          or_equal: true
+
+      - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
+          column_A: ship_date
+          column_B: commit_date
+
+# These enforce:
+# receipt_date >= ship_date
+# ship_date > commit_date

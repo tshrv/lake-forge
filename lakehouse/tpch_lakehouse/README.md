@@ -227,5 +227,60 @@ This is the kind of DAG that looks great in dbt docs because it tells a story: r
 
 uv run dbt run --select monthly_sales --select sales_by_region --select supplier_revenue --select top_products
 
+## DBT Expectations
+Business logic tests
+We can do
+Range tests for columns (between, greater, less)
+cross column tests ship_date >= order_date
+
+Step 3 — Cross-column tests
+One advantage of dbt-expectations is testing relationships.
+For example:
+ship_date >= order_date
+or
+receipt_date >= ship_date
+Those are much more representative of production data quality.
+
+Step 4 — Aggregate tests
+For example:
+Revenue should never be negative
+or
+Every customer should have at least one order
+These validate business outcomes rather than individual rows.
+
+Distribution tests
+These are excellent for catching data drift.
+
+Step 6. Expression-based tests
+One of the most powerful features is validating arbitrary SQL expressions.
+This verifies a key business invariant:
+SUM(int_order_sales.net_sales) == SUM(customer_revenue.revenue)
+If those totals ever diverge because of an incorrect join or aggregation, the test will fail. That's the kind of end-to-end consistency check that's very valuable in production.
+
+Rather than adding every available dbt-expectations test, I'd focus on a concise, meaningful set that tells a story:
+- Schema integrity: unique, not_null, accepted_values
+- Business constraints: quantity > 0, discount and tax within expected ranges
+- Cross-column rules: receipt_date >= ship_date >= commit_date
+- Aggregate validation: revenue totals are positive
+- End-to-end reconciliation: total net_sales in int_order_sales equals total revenue in customer_revenue
+Those demonstrate increasing levels of data quality maturity and are the kinds of validations you'd expect to see in a production analytics engineering project.
 
 > Pending: DBT INCREMENTAL
+
+
+
+
+# The big picture
+```
+Can I ingest data?
+        ↓
+Can I transform it?
+        ↓
+Can I trust it?
+        ↓
+Can users consume it?
+        ↓
+Can operators monitor it?
+        ↓
+Can I optimize it?
+```

@@ -22,6 +22,9 @@ models:
           - not_null
           - accepted_values:
               values: ['F', 'O', 'P']
+          - dbt_expectations.expect_column_distinct_count_to_be_between:
+              min_value: 3
+              max_value: 3
 
       - name: order_date
         description: Date on which the order was placed.
@@ -32,6 +35,8 @@ models:
         description: Total monetary value of the order.
         tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
 
       - name: order_priority
         description: Order priority assigned by TPCH.
@@ -41,3 +46,8 @@ models:
 
       - name: ship_priority
         description: Shipping priority.
+
+    tests:
+    - dbt_expectations.expect_table_row_count_to_be_between:
+        min_value: 100000000
+    # For stg_orders, that verifies you didn't accidentally ingest a tiny subset.

@@ -13,3 +13,14 @@ models:
       - name: revenue
         tests:
           - not_null
+          - dbt_expectations.expect_column_sum_to_be_between:
+              min_value: 1
+              # aggregate test, This checks: SUM(revenue) > 0
+          - dbt_expectations.expect_column_mean_to_be_between:
+              min_value: 0
+
+      - name: total_orders
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              # Every customer in the mart should have at least one order.
