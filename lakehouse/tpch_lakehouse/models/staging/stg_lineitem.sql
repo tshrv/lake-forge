@@ -12,6 +12,8 @@ select
     l_discount        as discount,
     l_tax             as tax,
 
-    cast(l_shipdate as date) as ship_date
+    cast(l_shipdate as date) as ship_date,
+    cast(l_commitdate as date) as commit_date,
+    cast(l_receiptdate as date) as receipt_date
 
 from {{ source('tpch', 'lineitem') }}

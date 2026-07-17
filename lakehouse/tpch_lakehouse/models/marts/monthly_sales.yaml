@@ -13,3 +13,8 @@ models:
       - name: revenue
         tests:
           - not_null
+
+      - name: total_quantity
+        tests:
+          - dbt_expectations.expect_column_sum_to_be_between:
+              min_value: 1

@@ -19,3 +19,12 @@ models:
       - name: net_sales
         tests:
           - not_null
+
+    tests:
+      - dbt_expectations.expect_table_aggregation_to_equal_other_table:
+          expression: "sum(net_sales)"
+          compare_model: ref('customer_revenue')
+          compare_expression: "sum(revenue)"
+      # This verifies a key business invariant:
+      # SUM(int_order_sales.net_sales) == SUM(customer_revenue.revenue)
+      # If those totals ever diverge because of an incorrect join or aggregation, the test will fail. That's the kind of end-to-end consistency check that's very valuable in production.
