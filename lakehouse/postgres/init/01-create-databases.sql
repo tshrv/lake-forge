@@ -1,0 +1,2 @@
+CREATE DATABASE nessie;
+CREATE DATABASE marquez;

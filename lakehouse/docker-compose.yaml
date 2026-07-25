@@ -13,17 +13,33 @@ services:
     volumes:
       - minio_data:/data
 
+  minio-init:
+    image: minio/mc
+    container_name: minio-init
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 admin password123; do
+        echo 'Waiting for MinIO...';
+        sleep 2;
+      done;
+      mc mb --ignore-existing local/warehouse;
+      echo 'Bucket warehouse is ready.';
+      "
+    restart: "no"
+
   postgres:
     image: postgres:16
-    container_name: nessie-postgres
+    container_name: postgres
     environment:
-      POSTGRES_USER: nessie
-      POSTGRES_PASSWORD: nessie
-      POSTGRES_DB: nessie
+      POSTGRES_USER: pgs_user
+      POSTGRES_PASSWORD: pgs_password
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
 
   nessie:
     image: ghcr.io/projectnessie/nessie:0.106.0
@@ -48,10 +64,39 @@ services:
       - ./trino/catalog:/etc/trino/catalog
       - ./trino/config.properties:/etc/trino/config.properties
       - ./trino/jvm.config:/etc/trino/jvm.config
+      - ./trino/openlineage-event-listener.properties:/etc/trino/openlineage-event-listener.properties
     depends_on:
       - nessie
       - minio
 
+  marquez:
+    image: marquezproject/marquez:0.51.1
+    container_name: marquez
+    ports:
+      - "5000:5000"    # API (OpenLineage events go here)
+      - "5001:5001"    # admin
+    environment:
+      MARQUEZ_PORT: 5000
+      MARQUEZ_ADMIN_PORT: 5001
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: marquez
+      POSTGRES_USER: marquez
+      POSTGRES_PASSWORD: marquez
+    depends_on:
+      - postgres
+
+  marquez-web:
+    image: marquezproject/marquez-web:0.51.1
+    container_name: marquez-web
+    ports:
+      - "3000:3000"
+    environment:
+      MARQUEZ_HOST: marquez
+      MARQUEZ_PORT: 5000
+      WEB_PORT: 3000
+    depends_on:
+      - marquez
 volumes:
   postgres_data:
   minio_data:
