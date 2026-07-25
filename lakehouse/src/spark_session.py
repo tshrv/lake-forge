@@ -17,6 +17,7 @@ def create_spark():
                     "org.apache.hadoop:hadoop-aws:3.3.4",
                     "software.amazon.awssdk:bundle:2.31.67",
                     "software.amazon.awssdk:url-connection-client:2.31.67",
+                    "io.openlineage:openlineage-spark_2.12:1.24.2",
                 ]
             ),
         )
@@ -81,6 +82,18 @@ def create_spark():
             "spark.executor.extraJavaOptions",
             "-Daws.region=us-east-1",
         )
+        # OpenLineage configuration
+        # .config(
+        #     "spark.jars.packages", "io.openlineage:openlineage-spark_2.12:1.24.2"
+        # )  # match your Scala version
+        .config(
+            "spark.extraListeners",
+            "io.openlineage.spark.agent.OpenLineageSparkListener",
+        )
+        .config("spark.openlineage.columnLineage.datasetLineageEnabled", "true")
+        .config("spark.openlineage.transport.type", "http")
+        .config("spark.openlineage.transport.url", "http://localhost:5000")
+        .config("spark.openlineage.namespace", "lakeforge")
         .getOrCreate()
     )
 
